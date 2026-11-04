@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Офисные технологии — ЛР 3.1: сравнение расписаний</string>
+  </property>
+  <layout class="QVBoxLayout" name="rootLayout">
+   <item>
+    <layout class="QHBoxLayout" name="rowA">
+     <item>
+      <widget class="QPushButton" name="btn_a">
+       <property name="text">
+        <string>Выбрать файл A</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_a">
+       <property name="text">
+        <string>(не выбран)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="rowB">
+     <item>
+      <widget class="QPushButton" name="btn_b">
+       <property name="text">
+        <string>Выбрать файл B</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_b">
+       <property name="text">
+        <string>(не выбран)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="rowCmp">
+     <item>
+      <widget class="QLabel" name="lbl_sheet_caption">
+       <property name="text">
+        <string>Лист:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="edit_sheet">
+       <property name="placeholderText">
+        <string>например, 09.03.01.01Б</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_cmp">
+       <property name="text">
+        <string>Сравнить</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="table">
+     <property name="columnCount">
+      <number>9</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>Тип</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Группа</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>День</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Пара</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Неделя</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Подгр</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Поле</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Было</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Стало</string>
+      </property>
+     </column>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbl_summary">
+     <property name="text">
+      <string>Готово к работе.</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

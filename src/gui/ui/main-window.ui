@@ -13,13 +13,52 @@
   <property name="windowTitle">
    <string>Офисные технологии — ЛР 3.1: сравнение расписаний</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#MainWindow {
+    background-color: #1E1F22;
+    border-radius: 10px;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="rootLayout">
    <item>
     <layout class="QHBoxLayout" name="rowA">
      <item>
       <widget class="QPushButton" name="btn_a">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton#btn_a,
+QPushButton#btn_b {
+    background-color: #3574F0;
+    color: #D4E0E4;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 0px 10px;
+}
+
+QPushButton#btn_a:hover,
+QPushButton#btn_b:hover {
+    background-color: #2866e0;
+}
+
+QPushButton#btn_a:pressed,
+QPushButton#btn_b:pressed {
+    background-color: #2557ba;
+}</string>
+       </property>
        <property name="text">
-        <string>Выбрать файл A</string>
+        <string>Исходная версия</string>
        </property>
       </widget>
      </item>
@@ -36,8 +75,41 @@
     <layout class="QHBoxLayout" name="rowB">
      <item>
       <widget class="QPushButton" name="btn_b">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton#btn_a,
+QPushButton#btn_b {
+    background-color: #3574F0;
+    color: #D4E0E4;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 0px 10px;
+}
+
+QPushButton#btn_a:hover,
+QPushButton#btn_b:hover {
+    background-color: #2866e0;
+}
+
+QPushButton#btn_a:pressed,
+QPushButton#btn_b:pressed {
+    background-color: #2557ba;
+}</string>
+       </property>
        <property name="text">
-        <string>Выбрать файл B</string>
+        <string>Версия для сравнеиня</string>
        </property>
       </widget>
      </item>
@@ -61,6 +133,36 @@
      </item>
      <item>
       <widget class="QLineEdit" name="edit_sheet">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit#edit_sheet {
+    background-color: #3C3F41;
+    color: #D4E0E4;
+    border: 2px solid #4D4E51;
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+QLineEdit#edit_sheet:focus {
+    border: 2px solid #CED0D6;
+    background-color: #3C3F41;
+}
+
+QLineEdit#edit_sheet::placeholder {
+    color: #6272a4;
+}</string>
+       </property>
        <property name="placeholderText">
         <string>например, 09.03.01.01Б</string>
        </property>
@@ -68,6 +170,36 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_cmp">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton#btn_cmp {
+    background-color: #3574F0;
+    color: #D4E0E4;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 0px 10px;
+}
+
+QPushButton#btn_cmp:hover {
+    background-color: #2866e0;
+}
+
+QPushButton#btn_cmp:pressed {
+    background-color: #2557ba;
+}</string>
+       </property>
        <property name="text">
         <string>Сравнить</string>
        </property>
@@ -77,9 +209,26 @@
    </item>
    <item>
     <widget class="QTableWidget" name="table">
+     <property name="styleSheet">
+      <string notr="true">QTableWidget {
+    alternate-background-color: #252525;
+    gridline-color: #444;
+}
+QTableWidget::item {
+    color: #E0E0E0;
+    padding: 4px;
+}
+QHeaderView::section {
+    background-color: #2D2D2D;
+    color: #FFFFFF;
+}</string>
+     </property>
      <property name="columnCount">
       <number>9</number>
      </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Тип</string>
@@ -125,9 +274,6 @@
        <string>Стало</string>
       </property>
      </column>
-     <attribute name="horizontalHeaderStretchLastSection">
-      <bool>true</bool>
-     </attribute>
     </widget>
    </item>
    <item>

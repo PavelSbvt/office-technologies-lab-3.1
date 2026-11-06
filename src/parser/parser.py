@@ -1,108 +1,73 @@
 import re
-from typing import Optional
-
 import pandas as pd
-
 from core.models import Record
 
 
-DAY_VALUES = {'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'}
-
-
-def _norm_str(value) -> str:
-    """Приводит значение к строке: strip + схлопывание пробелов."""
+def clean_text(value) -> str:
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return ''
-    s = str(value).strip()
-    s = re.sub(r'\s+', ' ', s)
-    return s
+    return re.sub(r'\s+', ' ', str(value).strip())
 
 
-def _norm_pair(value) -> Optional[int]:
-    """№ пары → int, иначе None."""
-    s = _norm_str(value)
+def clean_number(value) -> int | None:
+    s = clean_text(value)
     if not s:
         return None
     try:
         return int(float(s))
     except ValueError:
         return None
-
-
-def _norm_subgroup(value) -> Optional[int]:
-    s = _norm_str(value)
-    if not s:
-        return None
-    try:
-        return int(float(s))
-    except ValueError:
-        return None
-
-
-def _find_header_row(df: pd.DataFrame) -> int:
-    """Ищет строку, где в колонке 0 стоит 'Группа'."""
-    for i in range(min(30, len(df))):
-        if _norm_str(df.iat[i, 0]) == 'Группа':
-            return i
-    raise ValueError('Не найдена строка заголовков (нет ячейки "Группа" в колонке A)')
-
-
-def _row_to_records(row: pd.Series, week: str,
-                    cols: tuple) -> list[Record]:
-    """
-    cols — индексы колонок в порядке:
-    (group, day, pair, subject, subgroup, lesson_type, teacher, room)
-    """
-    g, d, p, subj, sub, ltype, teach, room = (row.iloc[c] for c in cols)
-
-    subject = _norm_str(subj)
-    if not subject:
-        return []                      # пустая ячейка — пропускаем
-
-    group = _norm_str(g)
-    day = _norm_str(d)
-    pair = _norm_pair(p)
-    if not group or not day or pair is None:
-        return []                      # неполная запись
-
-    return [Record(
-        group=group,
-        day=day,
-        pair=pair,
-        subject=subject,
-        subgroup=_norm_subgroup(sub),
-        lesson_type=_norm_str(ltype).lower(),
-        teacher=_norm_str(teach),
-        room=_norm_str(room),
-        week=week,
-    )]
 
 
 def parse_sheet(path: str, sheet_name: str) -> list[Record]:
-    """
-    Читает один лист .xls/.xlsx и возвращает плоский список занятий.
-    Ожидает структуру «расписание ИАиИТ»:
-      A: Группа, B: День недели, C: № пары, D: Предмет, E: Подгр,
-      F: Тип зан., G: Преподаватель, H: Аудитория  — нечётная неделя
-      I: День недели, J: № пары, K: Предмет, L: Подгр,
-      M: Тип зан., N: Преподаватель, O: Аудитория — чётная неделя
-    """
     df = pd.read_excel(path, sheet_name=sheet_name, header=None)
 
-    header_row = _find_header_row(df)
+    header_row = 0
+    for i in range(min(30, len(df))):
+        if clean_text(df.iat[i, 0]) == 'Группа':
+            header_row = i
+            break
+    else:
+        raise ValueError("Не найдена строка заголовков (нет слова 'Группа')")
+
     body = df.iloc[header_row + 1:].copy()
+    body[0] = body[0].ffill()
+    body[1] = body[1].ffill()
+    body[8] = body[8].ffill()
 
-    # Объединённые ячейки «Группа» и «День недели» заполнены только в первой
-    # строке блока — протягиваем вниз.
-    body[0] = body[0].ffill()    # Группа
-    body[1] = body[1].ffill()    # День недели (левая половина)
-    body[8] = body[8].ffill()    # День недели (правая половина)
+    records = []
 
-    records: list[Record] = []
     for _, row in body.iterrows():
-        # левая половина (нечётная неделя): A..H
-        records.extend(_row_to_records(row, 'odd', (0, 1, 2, 3, 4, 5, 6, 7)))
-        # правая половина (чётная неделя): A (группа) + I..O
-        records.extend(_row_to_records(row, 'even', (0, 8, 9, 10, 11, 12, 13, 14)))
+        # Левая часть (нечетная)
+        subject_odd = clean_text(row.iloc[3])
+        if subject_odd:
+            group = clean_text(row.iloc[0])
+            day = clean_text(row.iloc[1])
+            pair = clean_number(row.iloc[2])
+
+            if group and day and pair is not None:
+                records.append(Record(
+                    group=group, day=day, pair=pair, subject=subject_odd,
+                    lesson_type=clean_text(row.iloc[5]).lower(),
+                    teacher=clean_text(row.iloc[6]),
+                    room=clean_text(row.iloc[7]),
+                    week='odd'
+                ))
+
+        # Правая часть (четная)
+        subject_even = clean_text(row.iloc[10])
+        if subject_even:
+            group = clean_text(row.iloc[0])
+            day = clean_text(row.iloc[8])
+            pair = clean_number(row.iloc[9])
+
+            if group and day and pair is not None:
+                records.append(Record(
+                    group=group, day=day, pair=pair, subject=subject_even,
+                    lesson_type=clean_text(row.iloc[12]).lower(),
+                    teacher=clean_text(row.iloc[13]),
+                    room=clean_text(row.iloc[14]),
+                    week='even'
+                ))
 
     return records

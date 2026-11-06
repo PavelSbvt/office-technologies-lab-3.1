@@ -224,7 +224,7 @@ QHeaderView::section {
 }</string>
      </property>
      <property name="columnCount">
-      <number>9</number>
+      <number>8</number>
      </property>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
@@ -256,11 +256,6 @@ QHeaderView::section {
      </column>
      <column>
       <property name="text">
-       <string>Подгр</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>Поле</string>
       </property>
      </column>
@@ -279,7 +274,7 @@ QHeaderView::section {
    <item>
     <widget class="QLabel" name="lbl_summary">
      <property name="text">
-      <string>Готово к работе.</string>
+      <string/>
      </property>
     </widget>
    </item>

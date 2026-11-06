@@ -5,7 +5,11 @@ COMPARED_FIELDS = ('subject', 'lesson_type', 'teacher', 'room')
 def diff(a: list[Record], b: list[Record]) -> list[Change]:
     """Сравнивает две версии расписания."""
     a_by_key = {r.key(): r for r in a}
-    b_by_key = {r.key(): r for r in b}
+
+    b_by_key = {}
+    for r in b:
+        k = r.key()
+        b_by_key[k] = r
 
     changes = []
 
